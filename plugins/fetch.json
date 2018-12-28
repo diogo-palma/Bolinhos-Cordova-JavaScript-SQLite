@@ -1,0 +1,26 @@
+{
+  "cordova-sqlite-ext": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-sqlite-ext"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "uk.co.workingedge.cordova.plugin.sqliteporter": {
+    "source": {
+      "type": "registry",
+      "id": "uk.co.workingedge.cordova.plugin.sqliteporter"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-sqlite-2": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-sqlite-2"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
+}
