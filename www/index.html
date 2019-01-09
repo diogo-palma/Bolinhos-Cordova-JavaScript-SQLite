@@ -6,7 +6,7 @@
    <meta name="format-detection" content="telephone=no">
    <meta name="msapplication-tap-highlight" content="no">
    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-   <link rel="stylesheet" href="css/jquery-ui.css">
+
    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
    <meta charset="UTF-8">
 
@@ -49,6 +49,11 @@
          font-feature-settings: 'liga';
       }
 
+      .title{
+         font-size: 14px;
+      }
+
+   
       .tabs{
          background-color: #f58220;
       }
@@ -116,7 +121,7 @@
          border-bottom: 1px solid orange !important;
          box-shadow: 0 1px 0 0 orange !important
       }
-      .ui-autocomplete { position: absolute; cursor: default;z-index:3000 !important;} 
+      .ui-autocomplete { position: absolute; cursor: default;z-i:3000 !important;} 
       .ui-menu .ui-menu-item-wrapper {
          padding: 15px 1em 15px .4em;
       }
@@ -126,6 +131,7 @@
       .modal{
          max-height: 85%;
          height: 85%;
+         width: 90%;
       }
       .modal.modal-fixed-footer {
          padding: 0;
@@ -140,11 +146,62 @@
 
          padding-left: 25px;
       }
+
+      .datepicker-date-display {
+         background-color: #f58220 !important;
+      }
+      .datepicker-table td.is-selected {
+         background-color: #f58220 !important;
+      }
+
+      .is-today{
+         background-color: #f3ecec;
+      }
+
+      .datepicker-modal {
+         height: 75%;
+      }
    </style>
 </head>
 
 <body>
 
+   <!-- Modal Cadastro -->
+   <div id="modal1" class="modal modal-fixed-footer">
+      <div class="modal-content">
+         <input id="editar" style="display:none">
+         <input id="id_cliente" style="display:none">
+         <div id="nome"></div>
+         <div class="input-field col s12">
+            <select id="opcao">
+               <option value="0" disabled selected>Opção:</option>
+               <option value="1">Cobrança</option>
+               <option value="2">Visita</option>
+               <option value="3">Outra</option>
+               <option value="4">Pago</option>
+            </select>
+         </div>
+         <input type="text" id="data_agenda" autocomplete="off" class="datepicker">
+         <div class="input-field col s12">
+            <textarea id="textarea1" placeholder="Observação" class="materialize-textarea" style="height: 68px !important"></textarea>
+
+            <div class="section scrollspy">
+               <div class="chip"> R$ 35,00 </div>
+               <div class="chip"> R$ 45,00 </div>
+               <div class="chip"> R$ 70,00 </div>
+               <div class="chip"> R$ 90,00 </div>
+               <div class="chip"> R$ 105,00 </div>
+               <div class="chip"> R$ 135,00 </div>
+            </div>
+
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button class="btn grey lighten-1 waves-effect waves-light" onclick="cancelar()" name="action">Cancelar</button>
+         <button class="btn orange darken-4 waves-effect waves-light" onclick="cadastro()" name="action">Enviar</button>
+      </div>
+
+   </div>
 
    <!-- Modal Gastos -->
    <div id="modal_gastos" class="modal modal-fixed-footer">
@@ -167,64 +224,9 @@
       </div>
    </div>
 
-   <!-- Modal Cadastro -->
-   <div id="modal1" class="modal modal-fixed-footer" style="    top: 5%;">
-      <div class="modal-content">
-         <h4>Cadastro</h4>
-         <input id="editar" type="text" style="display:none">
-         <input id="cli_codigo" type="text" style="display:none">
-         <input id="emp_codigo" type="text" style="display:none">
-         <div class="row">
-            <div class="input-field col s12" id="cliente">
-               <span>Cliente:</span>
-               <div class="ui-widget">
-                  <select class="browser-default" id="combobox">
-                     <option value="0"></option>
-                  </select>
-               </div>
-            </div>
-            <div class="input-field col s12">
-               <input type="text" class="datepicker data_altera">
-            </div>
-            <div id="empresa" class="input-field col s12" style="margin-top:-10px; display: none;">
-               <span>Empresa:</span>
-               <div class="ui-widget">
-                  <select class="browser-default" id="combobox2">
-                     <option value="0"></option>
-                  </select>
-               </div>
-            </div>
 
-            <div class="input-field col s12">
-               <select id="opcao">
-                  <option value="" disabled selected>Opção:</option>
-                  <option value="1">Cobrança</option>
-                  <option value="2">Visita</option>
-                  <option value="3">Outra</option>
-                  <option value="4">Pago</option>
-               </select>
-            </div>
 
-            <div class="input-field col s6">
-               <input placeholder="Telfone 1" id="tel1" type="text" class="validate">
 
-            </div>
-            <div class="input-field col s6">
-               <input placeholder="Telfone 2" id="tel2" type="text" class="validate">
-            </div>
-            <div class="input-field col s12">
-               <textarea id="textarea1" placeholder="Observação" class="materialize-textarea"></textarea>
-
-            </div>
-         </div>
-
-      </div>
-      <div class="modal-footer">
-         <a href="#!" onclick="fecharCadastro()" class="waves-effect waves-green btn-flat">Cancelar</a>
-         <button class="btn orange darken-4 waves-effect waves-light" onclick="javascript:cadastro()" name="action">Enviar
-         </button>
-      </div>
-   </div>
    <div class="navbar-fixed">
       <nav>
          <div class="nav-wrapper" style="background-color:#231f20">
@@ -233,7 +235,7 @@
          </div>
          <ul id="tabs-swipe-demo" class="tabs">
             <li class="tab col s3"><a href="#test-swipe-1" onclick="preencheAgenda()">Hoje</a></li>
-            <li class="tab col s3"><a class="active" href="#test-swipe-2" onclick="mostrarTodos()">Todos</a></li>
+            <li class="tab col s3"><a href="#test-swipe-2" class="todos" ontouchstart="preencheTodos(6)">Todos</a></li>
             <li class="tab col s3"><a href="#test-swipe-3" onclick="preencheGastos()">Gastos</a></li>
          </ul>
       </nav>
@@ -241,16 +243,13 @@
 
 
 
-   <div id="test-swipe-1" class="col s12" style="margin-top:55px">
-      <a href="#" onclick="abrirCadastro()" class="btn-floating btn-large waves-effect waves-light black modal-trigger"
-         style="position: fixed ; right: 10px;bottom: 10px;">
-         <i class="material-icons">add</i>
-      </a>
+   <div id="test-swipe-1" class="col s12" style="margin-top: 55px">
 
       <!-- HOJE -->
 
 
-      <div class="container">
+      <div class="container" style="margin-top: 55px">
+
          <nav style="margin-top: 10px; border-radius: 10px; background-color: #414144">
             <div class="nav-wrapper">
                <form>
@@ -262,9 +261,28 @@
                </form>
             </div>
          </nav>
-         <div id="agenda"></div>
+         <div id="agenda" class="center">
+            <div class="preloader-wrapper big active">
+               <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                     <div class="circle"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
 
       </div>
+
+      <a href="#" onclick="pegarContato()" class="btn-floating btn-large waves-effect waves-light black" style="position: fixed ; right: 10px;bottom: 60px;">
+         <i class="material-icons">add</i>
+      </a>
+
 
 
    </div>
@@ -272,14 +290,17 @@
 
    </div>
    <!-- TODOS -->
-   <div id="test-swipe-2" class="col s12 " style="margin-top:55px">
+   <div id="test-swipe-2" class="col s12 " style="margin-top: 55px">
+
+
       <div class="container">
          <nav style="margin-top: 10px; border-radius: 10px; background-color: #414144">
             <div class="nav-wrapper">
                <form>
                   <div class="input-field">
-                     <input id="searchTodos" placeholder="Pesquisar..." type="search" required onkeyup="pesquisaTodos()">
-                     <label class="label-icon" for="searchTodos"><i class="material-icons">search</i></label>
+                     <input id="searchTodos" placeholder="Pesquisar..." type="search" required onkeyup="">
+                     <label class="
+                        label-icon" for="searchTodos"><i class="material-icons">search</i></label>
                      <i class="material-icons" onclick="limpaPesquisa()">close</i>
                   </div>
                </form>
@@ -300,8 +321,21 @@
          </div>
 
 
-         <div id="todos">
+         <div id="todos" class="center">
 
+            <div class="preloader-wrapper big active">
+               <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                     <div class="circle"></div>
+                  </div>
+               </div>
+            </div>
 
 
          </div>
@@ -309,20 +343,14 @@
    </div>
 
 
-   <div id="test-swipe-3" class="col s12 " style="margin-top:55px">
-
-      <!-- GASTOS -->
-
-      <a href="#" onclick="abrirGastos()" class="btn-floating btn-large waves-effect waves-light orange" style="position: fixed ; right: 10px;bottom: 10px;">
-         <i class="material-icons">add</i>
-      </a>
+   <div id="test-swipe-3" class="col s12 " style="margin-top: 55px">
 
       <div class="container">
-         <nav style="margin-top: 10px; border-radius: 10px; background-color: #414144">
+         <nav style="margin-top: 10px; border-radius: 10px; background-color: #f58220">
             <div class="nav-wrapper">
                <form>
                   <div class="input-field">
-                     <input id="searchGastos" placeholder="Pesquisar..." type="search" required onkeyup="pesquisaGastos()">
+                     <input id="searchGastos" placeholder="Pesquisar..." type="search" required>
                      <label class="label-icon" for="searchGastos"><i class="material-icons">search</i></label>
                      <i class="material-icons" onclick="limpaPesquisa()">close</i>
                   </div>
@@ -339,17 +367,33 @@
                <span>até</span>
                <input type="text" id="data4" autocomplete="off" class="datepicker">
             </div>
-            <div class="input-field col s2"><a class="waves-effect waves-light btn grey darken-2" style="margin-top: 15px;"
+            <div class="input-field col s2"><a class="waves-effect waves-light btn grey darken-2" style="margin-top: 15px"
                   onclick="pesquisaGastosComData()">Ok</a></div>
          </div>
          <h5 class="right-align">Total R$ <span id="total"> </span></h5>
 
-         <div id="gastos">
+         <div id="gastos" class="center">
 
-
+            <div class="preloader-wrapper big active">
+               <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                     <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                     <div class="circle"></div>
+                  </div>
+               </div>
+            </div>
 
          </div>
+         <a href="#" onclick="abrirGastos()" class="btn-floating btn-large waves-effect waves-light" style="position: fixed ; right: 10px;bottom: 60px; background-color:#f58220">
+            <i class="material-icons">add</i>
+         </a>
       </div>
+
 
    </div>
 
@@ -358,13 +402,13 @@
    <script type="text/javascript" src="js/index.js"></script>
    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
    <script type="text/javascript" src="js/materialize.min.js"></script>
-   <script type="text/javascript" src="js/jquery.mask.js"></script>
-
-   <script src="js/jquery-ui.js"></script>
    <script src="js/jquery.maskMoney.js"></script>
 
+
+
    <script>
-      //var db = window.openDatabase('teste', "0.1", "My list", 200000);
+
+      $("#valor").maskMoney();
 
       var db;
       function devicereadyFun() {
@@ -375,28 +419,32 @@
 
          db.transaction(function (tx) {
 
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Clientes ( codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone1 TEXT, telefone2 TEXT, emp_codigo INTEGER )');
 
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Empresas ( codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT )');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Agenda ( codigo INTEGER PRIMARY KEY AUTOINCREMENT, data_criado datetime default current_timestamp, data_agenda datetime, opcao INTEGER, observacao TEXT, emp_codigo INTEGER, cli_codigo INTEGER )');
+            // tx.executeSql('DROP TABLE agenda');
+            //tx.executeSql('DROP TABLE gastos');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Agenda ( codigo INTEGER PRIMARY KEY AUTOINCREMENT, data_criado datetime default current_timestamp, data_agenda datetime, opcao INTEGER, observacao TEXT, cli_codigo INTEGER, cli_nome TEXT  )');
             tx.executeSql('CREATE TABLE IF NOT EXISTS Gastos (codigo INTEGER PRIMARY KEY AUTOINCREMENT, data_criado datetime default current_timestamp, descricao TEXT, valor DOUBLE)');
 
-            /*  tx.executeSql("SELECT * FROM Gastos WHERE data_criado BETWEEN '2018-12-29 00:00:00' AND '2018-12-31 23:59:59'", [], function (tx, res) {
-                 alert("Quantidade Resultados: " + res.rows.length);
-                 for (var i = 0; i < res.rows.length; i++) {
-                    alert("Linha " + i + ": " + res.rows.item(i).data_criado);
-                 }
-              });*/
+            // tx.executeSql("SELECT * FROM Gastos WHERE data_criado BETWEEN '2018-12-29 00:00:00' AND '2018-12-31 23:59:59'", [], function (tx, res) {
+            //    alert("Quantidade Resultados: " + res.rows.length);
+            //    for (var i = 0; i < res.rows.length; i++) {
+            //       alert("Linha " + i + ": " + res.rows.item(i).data_criado);
+            //    }
+            // });
+
+            // tx.executeSql("SELECT * FROM agenda", [], function (tx, res) {
+            //    alert("Quantidade Resultados: " + res.rows.length);
+            //    for (var i = 0; i < res.rows.length; i++) {
+            //       alert("Linha " + i + ": " + res.rows.item(i).data_criado);
+            //    }
+            // });
 
          });
-         preencheAgenda();
-         preencheClientes();
-         preencheEmpresas();
+         pegarTodosContatos();
+
+
 
       }
-
-
-
       function dbcopy() {
          //Database filename to be copied is demo.db
 
@@ -415,7 +463,6 @@
          //window.plugins.sqlDB.copyDbToStorage(dbname, location, destination, overwrite, success, error);
 
       }
-
       function removeDB() {
          var location = 1;
          window.plugins.sqlDB.remove("boinhos.db", location, rmsuccess, rmerror);
@@ -439,13 +486,6 @@
 
       document.addEventListener('deviceready', dbcopy, false);
 
-
-      $(document).ready(function () {
-         $('select').formSelect();
-      });
-
-      $('#modal1').modal();
-
       var el = $('.tabs');
       var options = {}
       var instance = M.Tabs.init(el, options);
@@ -453,33 +493,553 @@
       sele.select('test-swipe-1');
 
 
+      function resizeTab() {
+         var maxHeight = document.body.scrollHeight - 50;
 
-      $(document).ready(function () {
-         $('.modal').modal();
+         $(".tabs-content").css('height', maxHeight + 'px');
+      }
+
+      $('.modal').modal();
+      $('select').formSelect();
+
+      document.addEventListener('DOMContentLoaded', function () {
+
+         var options2 = {
+            autoClose: true,
+            vibrate: true,
+            format: 'dd/mm/yyyy',
+            i18n: {
+               months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+               monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+               weekdays: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+               weekdaysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
+               weekdaysAbbrev: ["D", "S", "T", "Q", "Q", "S", "S"]
+            },
+         }
+         var elems = document.querySelectorAll('.datepicker');
+         var instances = M.Datepicker.init(elems, options2);
       });
 
-      var instance = M.FormSelect.getInstance($("#opcao"));
 
-      function preencheClientes() {
-         db.transaction(function (transaction) {
-            transaction.executeSql('SELECT * FROM Clientes;', [],
-               function (transaction, results) {
-                  if (results != null && results.rows != null) {
-                     if (results.rows.length > 0) {
-                        for (var i = 0; i < results.rows.length; i++) {
-                           var code = results.rows.item(i).nome;
-                           $('#combobox').append($('<option>', {
-                              value: results.rows.item(i).codigo,
-                              text: code
-                           }));
-                        }
-                     }
-                  }
-               });
+
+
+
+      var date = new Date();
+      var hoje = ("0" + date.getDate()).slice(-2) + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear();
+
+      $(".datepicker").attr("placeholder", "Selecione a data");
+
+      function pegarContato() {
+         navigator.contacts.pickContact(function (contact) {
+            console.log('The following contact has been selected:' + JSON.stringify(contact));
+            //Build a simple string to display the Contact - would be better in Handlebars
+            var s = "";
+            var nome = getName(contact);
+
+
+            s += "<h4 class='cli_nome'>" + nome + "</h4>";
+
+            if (contact.phoneNumbers) {
+               s += ' Telefone: ' + contact.phoneNumbers[0].value + "<br/>";
+            }
+
+
+            console.log(contact.id);
+            $("#id_cliente").val(contact.id);
+            $('#modal1').modal('open');
+            $("#nome").html(s);
+
+
+
+         }, function (err) {
+            console.log('Error: ' + err);
          });
       }
 
+      $(document).ready(function () {
+         $('.modal').modal({
+            dismissible: false // Modal can be dismissed by clicking outside of the modal
 
+         });
+      });
+
+      function getName(c) {
+         var name = c.displayName;
+         if (!name || name === "") {
+            if (c.name.formatted) return c.name.formatted;
+            if (c.name.givenName && c.name.familyName) return c.name.givenName + " " + c.name.familyName;
+            return "";
+         }
+         return name;
+      }
+
+
+      function cadastro() {
+
+         var editar = $("#editar").val();
+
+         var cli_codigo = $("#id_cliente").val();
+         console.log(cli_codigo);
+         var data_agenda = $("#data_agenda").val();
+         var opcao = $("#opcao").val();
+         var observacao = $("#textarea1").val();
+         var cliente_nome = $("#nome").text();
+
+         if (!data_agenda) {
+            alert("Selecione uma data!");
+            return;
+         }
+
+         data_agenda = data_agenda.split("/").reverse().join("/");
+
+
+         if (!editar) {
+            db.transaction(function (tx) {
+               tx.executeSql('INSERT INTO Agenda (data_agenda, opcao, observacao, cli_codigo, cli_nome) values ("' + data_agenda + '", ' + opcao + ', "' + observacao + '", "' + cli_codigo + '", "' + cliente_nome + '"); ', [], function (tx, rs) {
+
+
+               }, function (tx, error) {
+                  console.log('SELECT error: ' + error.message);
+               });
+            });
+         } else {
+            db.transaction(function (tx) {
+               tx.executeSql('UPDATE Agenda SET data_agenda="' + data_agenda + '" , opcao=' + opcao + ' , observacao="' + observacao + '" , cli_codigo="' + cli_codigo + '" , cli_nome="' + cliente_nome + '" WHERE codigo=' + editar + ' ', [], function (tx, rs) {
+
+
+               }, function (tx, error) {
+                  console.log('SELECT error: ' + error.message);
+               });
+            });
+         }
+
+         fecharCadastro();
+         preencheAgenda();
+         preencheTodos(6);
+
+
+      }
+
+      function fecharCadastro() {
+         $('#modal1').modal('close');
+         limpaCampos();
+      }
+
+      var contatos;
+
+
+
+      function preencheAgenda() {
+         var date = new Date();
+         var hoje = date.getFullYear() + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2);
+
+         var agenda = '';
+
+         var options = new ContactFindOptions();
+
+
+         db.transaction(function (transaction) {
+            transaction.executeSql('SELECT *  FROM Agenda   WHERE data_agenda="' + hoje + '" ORDER BY data_criado desc', [],
+               //transaction.executeSql('SELECT *  FROM Agenda ', [],
+               function (transaction, rs) {
+                  for (var i = 0; i < rs.rows.length; i++) {
+
+                     var telefone;
+                     var cli_codigo = rs.rows.item(i).cli_codigo;
+                     var cliente = $.grep(contatos, function (e) { return e.id == cli_codigo; });
+
+
+                     if (!cliente[0].displayName) {
+                        continue
+                     }
+
+                     if (!cliente[0].phoneNumbers) {
+                        telefone = "-";
+                     } else {
+                        telefone = cliente[0].phoneNumbers[0].value
+                     }
+
+
+                     switch (rs.rows.item(i).opcao) {
+                        case 1:
+                           opcao = 'Cobrança';
+                           cor = 'red';
+                           break;
+                        case 2:
+                           opcao = 'Visita';
+                           cor = 'blue';
+                           break;
+                        case 3:
+                           opcao = 'Outra';
+                           cor = 'orange';
+                           break;
+                        case 4:
+                           opcao = 'Pago';
+                           cor = 'green';
+                           break;
+                        default:
+                           opcao = '-';
+                           cor = 'grey lighten-3';
+                     }
+                     if (rs.rows.item(i).opcao == 4) {
+                        agenda += '<ul class="collection collection-agenda"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + ' </span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
+                     } else {
+                        agenda += '<ul class="collection collection-agenda"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + '</span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
+                     }
+
+
+                  }
+
+                  $("#agenda").html(agenda);
+               }, function (tx, error) {
+                  console.log('Erro: ' + error.message);
+               });
+         });
+
+
+      }
+
+      var contador = 6;
+
+      $(window).scroll(function () {
+         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+            contador = contador + 6;
+            preencheTodos(contador);
+         }
+      });
+
+      var data = false;
+
+      function pesquisaData() {
+         data = true;
+         preencheTodos(6);
+      }
+
+
+      function preencheTodos(count) {
+         var date = new Date();
+         var hoje = date.getFullYear() + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2);
+
+         var agenda = '';
+
+         var data1 = $("#data1").val().split("/").reverse().join("/");
+         var data2 = $("#data2").val().split("/").reverse().join("/");
+
+         var options = new ContactFindOptions();
+
+         if (data) {
+            db.transaction(function (transaction) {
+               //transaction.executeSql('SELECT *  FROM Agenda   WHERE data_agenda="' + hoje + '" ORDER BY data_criado desc', [],
+               transaction.executeSql('SELECT * FROM Agenda WHERE data_agenda BETWEEN  \'' + data1 + '\' AND  \'' + data2 + '\'  ORDER BY data_agenda DESC ', [],
+                  function (transaction, rs) {
+                     for (var i = 0; i < count; i++) {
+
+                        var telefone;
+                        if (!rs.rows.item(i)) {
+                           continue;
+                        }
+                        var cli_codigo = rs.rows.item(i).cli_codigo;
+                        var cliente = $.grep(contatos, function (e) { return e.id == cli_codigo; });
+
+                        if (!cliente[0].phoneNumbers) {
+                           telefone = "-";
+                        } else {
+                           telefone = cliente[0].phoneNumbers[0].value
+                        }
+
+
+                        switch (rs.rows.item(i).opcao) {
+                           case 1:
+                              opcao = 'Cobrança';
+                              cor = 'red';
+                              break;
+                           case 2:
+                              opcao = 'Visita';
+                              cor = 'blue';
+                              break;
+                           case 3:
+                              opcao = 'Outra';
+                              cor = 'orange';
+                              break;
+                           case 4:
+                              opcao = 'Pago';
+                              cor = 'green';
+                              break;
+                           default:
+                              opcao = '-';
+                              cor = 'grey lighten-3';
+                        }
+                        if (rs.rows.item(i).opcao == 4) {
+                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + ' </span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
+                        } else {
+                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + '</span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
+                        }
+
+
+                     }
+
+                     $("#todos").html(agenda);
+                  }, function (tx, error) {
+                     console.log('Erro: ' + error.message);
+                  });
+            });
+
+         } else {
+            db.transaction(function (transaction) {
+               //transaction.executeSql('SELECT *  FROM Agenda   WHERE data_agenda="' + hoje + '" ORDER BY data_criado desc', [],
+               transaction.executeSql('SELECT *  FROM Agenda ', [],
+                  function (transaction, rs) {
+                     for (var i = 0; i < count; i++) {
+
+                        var telefone;
+                        if (!rs.rows.item(i)) {
+                           continue;
+                        }
+                        var cli_codigo = rs.rows.item(i).cli_codigo;
+                        var cliente = $.grep(contatos, function (e) { return e.id == cli_codigo; });
+
+                        if (!cliente[0].phoneNumbers) {
+                           telefone = "-";
+                        } else {
+                           telefone = cliente[0].phoneNumbers[0].value
+                        }
+
+
+                        switch (rs.rows.item(i).opcao) {
+                           case 1:
+                              opcao = 'Cobrança';
+                              cor = 'red';
+                              break;
+                           case 2:
+                              opcao = 'Visita';
+                              cor = 'blue';
+                              break;
+                           case 3:
+                              opcao = 'Outra';
+                              cor = 'orange';
+                              break;
+                           case 4:
+                              opcao = 'Pago';
+                              cor = 'green';
+                              break;
+                           default:
+                              opcao = '-';
+                              cor = 'grey lighten-3';
+                        }
+                        if (rs.rows.item(i).opcao == 4) {
+                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + ' </span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
+                        } else {
+                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 18px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span style="font-size: 16px" class="title' + rs.rows.item(i).codigo + '"> ' + cliente[0].displayName + '</span><br>contato: <span class="telefone' + rs.rows.item(i).codigo + '">' + telefone + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
+                        }
+
+
+                     }
+
+                     $("#todos").html(agenda);
+                  }, function (tx, error) {
+                     console.log('Erro: ' + error.message);
+                  });
+            });
+
+         }
+
+         data = false;
+
+      }
+
+
+
+      function pegarTodosContatos() {
+         var opcao;
+         var cor;
+         options.filter = "";
+         options.multiple = true;
+         var fields = ["*"];
+         navigator.contacts.find(fields, onSucess, onError, options);
+
+      }
+
+      function onSucess(contacts) {
+         contatos = contacts;
+         console.log(contacts);
+         $("#agenda").removeClass();
+         preencheAgenda();
+         $("#todos").removeClass();
+         preencheTodos(6);
+         $("#gastos").removeClass();
+         preencheGastos();
+
+      }
+
+      function onError() {
+         console.log("some error");
+      }
+
+      function resetSelect(id) {
+         $(id).formSelect('destroy');
+         $(id).val('0').change();
+         $(id).formSelect();
+      }
+
+      function limpaCampos() {
+         resetSelect("#opcao");
+         $('.datepicker').val('');
+         //$('.datepicker').datepicker({}).datepicker("setDate", new Date());
+         // $("#tel1").val('');
+         // $("#tel2").val('');
+         $("#textarea1").val('');
+         $("#descricao").val('');
+         $("#valor").val('');
+         $("#editar").val('');
+      }
+
+
+      function editar(idAgenda) {
+
+         console.log($(".title" + idAgenda).text());
+         console.log($(".telefone" + idAgenda).text());
+
+
+         var nome = "<h4>" + $(".title" + idAgenda).text() + "</h4>";
+
+         nome += 'Telefone: ' + $(".telefone" + idAgenda).text() + "<br/>"
+
+         $("#nome").html(nome);
+
+         $("#editar").val(idAgenda);
+
+
+
+
+         db.transaction(function (tx) {
+
+
+            tx.executeSql('SELECT * FROM Agenda WHERE codigo=' + idAgenda, [], function (tx, rs) {
+
+
+
+               $("#textarea1").val(rs.rows.item(0).observacao);
+               $('#data_agenda').val(rs.rows.item(0).data_agenda.split("/").reverse().join("/"));
+               $("#id_cliente").val(rs.rows.item(0).cli_codigo);
+               $('#opcao').formSelect('destroy');
+               $('#opcao').val(rs.rows.item(0).opcao).change();
+               $('#opcao').formSelect();
+
+
+
+            }, function (tx, error) {
+               console.log('SELECT error: ' + error.message);
+            });
+         });
+
+         $('#modal1').modal('open');
+
+         preencheAgenda()
+         preencheTodos(6);
+
+
+
+      }
+
+      function cancelar() {
+         $('#modal1').modal('close');
+         limpaCampos();
+      }
+
+      $(".todos").on("click", function () {
+         preencheTodos(6);
+      });
+
+      $('.chip').on('click', function () {
+         var dinheiro = $(this).text();
+         var observacao = $("#textarea1").val();
+
+         $("#textarea1").val(observacao + dinheiro);
+         $('#textarea1').scrollTop($('#textarea1')[0].scrollHeight);
+      });
+
+      function pagar(idAgenda) {
+         if (confirm("Pago?")) {
+            db.transaction(function (tx) {
+               tx.executeSql('UPDATE Agenda SET opcao=4 WHERE codigo=' + idAgenda + ' ;', [], function (tx, rs) {
+
+               }, function (tx, error) {
+                  console.log('SELECT error: ' + error.message);
+               });
+            });
+            preencheAgenda();
+            preencheTodos(6);
+         }
+      }
+
+      function pesquisaTodos() {
+         var input = document.getElementById("searchTodos");
+         var filter = input.value.toLowerCase();
+         var nodes = document.getElementsByClassName('collection');
+
+         for (i = 0; i < nodes.length; i++) {
+            if (nodes[i].innerText.toLowerCase().includes(filter)) {
+               nodes[i].style.display = "block";
+            } else {
+               nodes[i].style.display = "none";
+            }
+         }
+      }
+
+      $('#searchTodos').keyup(function () {
+
+         var txt = $('#searchTodos').val();
+         $(".colletion-todos").each(function () {
+            if ($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      })
+
+
+      $('#searchTodos').keyup(function () {
+
+         var txt = $('#searchTodos').val();
+         $(".colletion").each(function () {
+            if ($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      })
+
+
+      $('#search').keyup(function () {
+
+         var txt = $('#search').val();
+         $(".collection-agenda").each(function () {
+            if ($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      })
+
+      $('#searchGastos').keyup(function () {
+
+         var txt = $('#searchGastos').val();
+         $(".collection-gastos").each(function () {
+            if ($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      })
+
+      function abrirGastos() {
+         $('#modal_gastos').modal('open');
+         limpaCampos();
+      }
 
       function preencheGastos() {
          var gastos = '';
@@ -498,7 +1058,7 @@
                for (var i = 0; i < rs.rows.length; i++) {
                   var data_gastos = rs.rows.item(i).data_criado.replace(/^(\d+)-(\d+)-(\d+)(.*):\d+$/, '$3/$2/$1$4')
                   console.log("gastos " + i + ": " + rs.rows.item(i).codigo);
-                  gastos += '<ul class="collection collection-gastos with-header"><li class="collection-item"><div><span class="data_gasto">' + data_gastos + '</span > <br><b style="font-size: 15px;">' + rs.rows.item(i).descricao + '</b><a href="#!" class="secondary-content"><i class="material-icons red-text" onclick="deletarGastos(' + rs.rows.item(i).codigo + ')">delete</i></a><span class="right" style="margin-right: 10px;">R$ <span class="dinheiro">' + rs.rows.item(i).valor + '</span></span></div></li ></ul > ';
+                  gastos += '<ul class="collection collection-gastos" style="width:85%"><li class="collection-item"><div><span class="data_gasto">' + data_gastos + '</span > <br><b style="font-size: 15px;">' + rs.rows.item(i).descricao + '</b><a href="#!" class="secondary-content"><i class="material-icons red-text" onclick="deletarGastos(' + rs.rows.item(i).codigo + ')">delete</i></a><span class="right" style="margin-right: 10px;">R$ <span class="dinheiro">' + rs.rows.item(i).valor + '</span></span></div></li ></ul > ';
                }
 
                $("#gastos").html(gastos);
@@ -511,6 +1071,52 @@
          });
 
          total();
+      }
+
+      function total() {
+         var sum = 0;
+         $('.dinheiro:visible').each(function () {
+            sum += parseFloat($(this).text().replace(',', '.'));
+         });
+
+         sum = sum.toFixed(2).toString().replace('.', ',');
+
+
+         $("#total").html(sum);
+
+
+      }
+
+      function gastos() {
+         var descricao = $("#descricao").val();
+         var valor = $("#valor").val();
+
+         valor = valor.replace('.', '');
+
+         valor = parseFloat(valor.replace(',', '.'));
+
+
+
+         if (descricao && valor) {
+            db.transaction(function (tx) {
+               tx.executeSql('INSERT INTO Gastos (descricao, valor) values ("' + descricao + '", ' + valor + '); ', [], function (tx, rs) {
+
+
+               }, function (tx, error) {
+                  console.log('INSERT error: ' + error.message);
+               });
+            });
+            fecharGastos();
+            preencheGastos();
+         } else {
+            alert("Preencha todos os campos!");
+         }
+      }
+
+
+      function fecharGastos() {
+         $('#modal_gastos').modal('close');
+         limpaCampos();
       }
 
       function pesquisaGastosComData() {
@@ -536,7 +1142,7 @@
 
                   var data_gastos = rs.rows.item(i).data_criado.replace(/^(\d+)-(\d+)-(\d+)(.*):\d+$/, '$3/$2/$1$4')
                   console.log("gastos " + i + ": " + rs.rows.item(i).codigo);
-                  gastos += '<ul class="collection collection-gastos with-header"><li class="collection-item"><div><span class="data_gasto">' + data_gastos + '</span > <br><b style="font-size: 15px;">' + rs.rows.item(i).descricao + '</b><a href="#!" class="secondary-content"><i class="material-icons red-text" onclick="deletarGastos(' + rs.rows.item(i).codigo + ')">delete</i></a><span class="right" style="margin-right: 10px;">R$ <span class="dinheiro">' + rs.rows.item(i).valor + '</span></span></div></li ></ul > ';
+                  gastos += '<ul class="collection collection-gastos with-header" style="width: 80%;"><li class="collection-item"><div><span class="data_gasto">' + data_gastos + '</span > <br><b style="font-size: 15px;">' + rs.rows.item(i).descricao + '</b><a href="#!" class="secondary-content"><i class="material-icons red-text" onclick="deletarGastos(' + rs.rows.item(i).codigo + ')">delete</i></a><span class="right" style="margin-right: 10px;">R$ <span class="dinheiro">' + rs.rows.item(i).valor + '</span></span></div></li ></ul > ';
                }
 
                $("#gastos").html(gastos);
@@ -554,584 +1160,18 @@
 
 
 
-      function preencheEmpresas() {
-         db.transaction(function (transaction) {
-            transaction.executeSql('SELECT * FROM Empresas;', [],
-               function (transaction, results) {
-                  if (results != null && results.rows != null) {
-                     if (results.rows.length > 0) {
-                        for (var i = 0; i < results.rows.length; i++) {
-                           var code = results.rows.item(i).nome;
-                           $('#combobox2').append($('<option>', {
-                              value: results.rows.item(i).codigo,
-                              text: code
-                           }));
-                        }
-
-                     }
-                  }
-               });
-         });
-      }
-
-      function pesquisa() {
-         var input = document.getElementById("search");
-         var filter = input.value.toLowerCase();
-         var nodes = document.getElementsByClassName('collection');
-
-         for (i = 0; i < nodes.length; i++) {
-            if (nodes[i].innerText.toLowerCase().includes(filter)) {
-               nodes[i].style.display = "block";
-            } else {
-               nodes[i].style.display = "none";
-            }
-         }
-      }
-
-      function pesquisaGastos() {
-         var input = document.getElementById("searchGastos");
-         var filter = input.value.toLowerCase();
-         var nodes = document.getElementsByClassName('collection-gastos');
-
-         for (i = 0; i < nodes.length; i++) {
-            if (nodes[i].innerText.toLowerCase().includes(filter)) {
-               nodes[i].style.display = "block";
-            } else {
-               nodes[i].style.display = "none";
-            }
-         }
-
-         total();
-      }
-
-      function pesquisaTodos() {
-         var input = document.getElementById("searchTodos");
-         var filter = input.value.toLowerCase();
-         var nodes = document.getElementsByClassName('colletion-todos');
-
-         for (i = 0; i < nodes.length; i++) {
-            if (nodes[i].innerText.toLowerCase().includes(filter)) {
-               nodes[i].style.display = "block";
-            } else {
-               nodes[i].style.display = "none";
-            }
-         }
-      }
-
-
-
-
-      function preencheAgenda() {
-
-         var date = new Date();
-         var hoje = date.getFullYear() + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2);
-
-         var agenda = '';
-
-
-
-         db.transaction(function (transaction) {
-            transaction.executeSql('SELECT Agenda.codigo, Agenda.data_agenda, Agenda.opcao, Agenda.observacao, Clientes.nome, Clientes.telefone1, Clientes.telefone2, Empresas.nome AS empresa  FROM Agenda INNER JOIN Clientes ON  Agenda.cli_codigo = Clientes.codigo INNER JOIN Empresas ON Agenda.emp_codigo = Empresas.codigo  WHERE data_agenda="' + hoje + '" ORDER BY data_criado desc', [],
-               function (transaction, rs) {
-                  for (var i = 0; i < rs.rows.length; i++) {
-                     var opcao;
-                     var cor;
-                     switch (rs.rows.item(i).opcao) {
-                        case 1:
-                           opcao = 'Cobrança';
-                           cor = 'red';
-                           break;
-                        case 2:
-                           opcao = 'Visita';
-                           cor = 'blue';
-                           break;
-                        case 3:
-                           opcao = 'Outra';
-                           cor = 'orange';
-                           break;
-                        case 4:
-                           opcao = 'Pago';
-                           cor = 'green';
-                           break;
-                        default:
-                           opcao = '-';
-                           cor = 'grey lighten-3';
-                     }
-                     if (rs.rows.item(i).opcao == 4) {
-                        agenda += '<ul class="collection"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
-                     } else {
-                        agenda += '<ul class="collection"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
-                     }
-
-
-                  }
-
-                  $("#agenda").html(agenda);
-               }, function (tx, error) {
-                  console.log('Erro: ' + error.message);
-               });
-         });
-
-      }
-
-
-      var contador = 6;
-
-      var data = false;
-
-      function pesquisaData() {
-         data = true;
-         preencheTodos(6);
-      }
-
-      function mostrarTodos() {
-         data = false;
-         preencheTodos(6);
-      }
-
-
-      $(window).scroll(function () {
-         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-            contador = contador + 6;
-            preencheTodos(contador);
-         }
-      });
-
-
-      function preencheTodos(count) {
-
-         if (count <= 6) {
-            $("#todos").html('');
-            contador = count;
-         }
-         var agenda = '';
-
-         var data1 = $("#data1").val().split("/").reverse().join("/");
-         var data2 = $("#data2").val().split("/").reverse().join("/");
-
-         if (data) {
-            db.transaction(function (transaction) {
-               transaction.executeSql('SELECT Agenda.codigo, Agenda.data_agenda, Agenda.opcao, Agenda.observacao, Clientes.nome, Clientes.telefone1, Clientes.telefone2, Empresas.nome AS empresa  FROM Agenda INNER JOIN Clientes ON  Agenda.cli_codigo = Clientes.codigo INNER JOIN Empresas ON Agenda.emp_codigo = Empresas.codigo WHERE data_agenda BETWEEN  \'' + data1 + '\' AND  \'' + data2 + '\'  ORDER BY data_agenda DESC ', [],
-                  function (transaction, rs) {
-                     if (count >= rs.rows.length) {
-                        count = rs.rows.length;
-                     }
-                     for (var i = 0; i < count; i++) {
-                        var opcao;
-                        var cor;
-                        switch (rs.rows.item(i).opcao) {
-                           case 1:
-                              opcao = 'Cobrança';
-                              cor = 'red';
-                              break;
-                           case 2:
-                              opcao = 'Visita';
-                              cor = 'blue';
-                              break;
-                           case 3:
-                              opcao = 'Outra';
-                              cor = 'orange';
-                              break;
-                           case 4:
-                              opcao = 'Pago';
-                              cor = 'green';
-                              break;
-                           default:
-                              opcao = '-';
-                              cor = 'grey lighten-3';
-                        }
-
-                        if (rs.rows.item(i).opcao == 4) {
-                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
-                        } else {
-                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
-                        }
-
-
-                     }
-
-                     $("#todos").html(agenda);
-                  }, function (tx, error) {
-                     console.log('Erro: ' + error.message);
-                  });
-            });
-
-         } else {
-
-
-            db.transaction(function (transaction) {
-               transaction.executeSql('SELECT Agenda.codigo, Agenda.data_agenda, Agenda.opcao, Agenda.observacao, Clientes.nome, Clientes.telefone1, Clientes.telefone2, Empresas.nome AS empresa  FROM Agenda INNER JOIN Clientes ON  Agenda.cli_codigo = Clientes.codigo INNER JOIN Empresas ON Agenda.emp_codigo = Empresas.codigo   ORDER BY data_agenda DESC ', [],
-                  function (transaction, rs) {
-                     if (count >= rs.rows.length) {
-                        count = rs.rows.length;
-                     }
-                     for (var i = 0; i < count; i++) {
-                        var opcao;
-                        var cor;
-                        switch (rs.rows.item(i).opcao) {
-                           case 1:
-                              opcao = 'Cobrança';
-                              cor = 'red';
-                              break;
-                           case 2:
-                              opcao = 'Visita';
-                              cor = 'blue';
-                              break;
-                           case 3:
-                              opcao = 'Outra';
-                              cor = 'orange';
-                              break;
-                           case 4:
-                              opcao = 'Pago';
-                              cor = 'green';
-                              break;
-                           default:
-                              opcao = '-';
-                              cor = 'grey lighten-3';
-                        }
-
-                        if (rs.rows.item(i).opcao == 4) {
-                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i></a></li></ul>';
-                        } else {
-                           agenda += '<ul class="collection colletion-todos"><li class="collection-item avatar"> <span class="' + cor + ' white-text chip"> ' + opcao + ' </span><span style="font-size: 15px;">' + rs.rows.item(i).data_agenda.split("/").reverse().join("/") + '</span> <br><span class="title"> ' + rs.rows.item(i).nome + '</span><p>' + rs.rows.item(i).empresa + ' <br>contato: <span>' + rs.rows.item(i).telefone1 + '</span><span style="margin-left:20px">' + rs.rows.item(i).telefone2 + '</span></p><blockquote>' + rs.rows.item(i).observacao + '</blockquote><a href="#!" class="secondary-content"><i class="material-icons orange-text" onclick="editar(' + rs.rows.item(i).codigo + ')">edit</i><br><br><i class="material-icons red-text" onclick="deletar(' + rs.rows.item(i).codigo + ')">delete</i><br><br><i class="material-icons green-text" onclick="pagar(' + rs.rows.item(i).codigo + ')">done</i></a></li></ul>'
-                        }
-
-
-                     }
-
-                     $("#todos").html(agenda);
-                  }, function (tx, error) {
-                     console.log('Erro: ' + error.message);
-                  });
-            });
-         }
-
-      }
-
-
-
-      $(document).ready(function () {
-         $('.datepicker').datepicker({
-            showOn: "focus",
-            dateFormat: "dd/mm/yy",
-            dayNames: ["Domingo", "Segunda", "Terça", "Quarte", "Quinta", "Sexta", "Sábado"],
-            dayNamesMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
-            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-         }).datepicker("setDate", new Date());
-      });
-
-
-
-      $('#tel1').mask('(00) 00000-0000');
-      $('#tel2').mask('(00) 00000-0000');
-      $('.datepicker').mask('00/00/0000');
-      $("#valor").maskMoney();
-
-
-      $("#opcao").formSelect();
-
-      function gastos() {
-         var descricao = $("#descricao").val();
-         var valor = $("#valor").val();
-
-         valor = parseFloat(valor.replace(',', '.'));
-
-         if (descricao && valor) {
+      function deletarGastos(idGastos) {
+         if (confirm("Deseja excluir?")) {
             db.transaction(function (tx) {
-               tx.executeSql('INSERT INTO Gastos (descricao, valor) values ("' + descricao + '", ' + valor + '); ', [], function (tx, rs) {
-
-
-               }, function (tx, error) {
-                  console.log('INSERT error: ' + error.message);
-               });
-            });
-            fecharGastos();
-            preencheGastos();
-         } else {
-            alert("Preencha todos os campos!");
-         }
-      }
-
-
-      function cadastro() {
-
-         var editar = $("#editar").val();
-
-         var empresaId = $("#combobox2 option:selected").val();
-
-         if (!editar) {
-            var clienteId = $("#combobox option:selected").val();
-
-         } else {
-            var clienteId = $("#cli_codigo").val();
-         }
-
-         var data_agenda = $('.datepicker').val();
-
-         var nomeCliente = $("#cliente input").val();
-         var nomeEmpresa = $("#empresa input").val();
-
-         var opcao = $("#opcao").val();
-         var tel1 = $("#tel1").val();
-         var tel2 = $("#tel2").val();
-         var observacao = $("#textarea1").val();
-
-
-         data_agenda = data_agenda.split("/").reverse().join("/");
-
-
-         if (clienteId > 0) {
-            if (empresaId > 0) {
-               if (!editar) {
-                  db.transaction(function (tx) {
-                     tx.executeSql('INSERT INTO Agenda (data_agenda, opcao, observacao, emp_codigo, cli_codigo) values ("' + data_agenda + '", ' + opcao + ', "' + observacao + '", ' + empresaId + ', ' + clienteId + '); ', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               } else {
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Clientes SET nome="' + nomeCliente + '", telefone1="' + tel1 + '", telefone2="' + tel2 + '", emp_codigo=' + empresaId + ' WHERE codigo=' + clienteId + ' ', [], function (tx, rs) {
-
-                     }, function (tx, error) {
-                        console.log('UPDATE Clientes error: ' + error.message);
-                     });
-                  });
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Agenda SET data_agenda="' + data_agenda + '", opcao=' + opcao + ', observacao="' + observacao + '", emp_codigo=' + empresaId + ', cli_codigo=' + clienteId + ' WHERE codigo=' + editar + ' ;', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('UPDATE Agenda error: ' + error.message);
-                     });
-                  });
-               }
-            } else {
-               db.transaction(function (tx) {
-                  tx.executeSql('INSERT INTO Empresas (nome) values ("' + nomeEmpresa + '")', [], function (tx, res) {
-                     empresaId = res.insertId;
-                  }, function (tx, error) {
-                     console.log('SELECT error: ' + error.message);
-                  });
-               });
-               if (!editar) {
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Clientes SET nome="' + nomeCliente + '", telefone1="' + tel1 + '", telefone2="' + tel2 + '", emp_codigo=' + empresaId + ' WHERE codigo=' + clienteId + ' ', [], function (tx, rs) {
-
-                     }, function (tx, error) {
-                        console.log('UPDATE Clientes error: ' + error.message);
-                     });
-                  });
-                  db.transaction(function (tx) {
-                     tx.executeSql('INSERT INTO Agenda (data_agenda, opcao, observacao, emp_codigo, cli_codigo) values ("' + data_agenda + '", ' + opcao + ', "' + observacao + '", ' + empresaId + ', ' + clienteId + '); ', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               } else {
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Agenda SET data_agenda="' + data_agenda + '", opcao=' + opcao + ', observacao="' + observacao + '", emp_codigo=' + empresaId + ', cli_codigo=' + clienteId + ' WHERE codigo=' + editar + ' ;', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               }
-            }
-         } else {
-            if (empresaId > 0) {
-               db.transaction(function (tx) {
-                  tx.executeSql('INSERT INTO Clientes (nome, telefone1, telefone2, emp_codigo) values ("' + nomeCliente + '", "' + tel1 + '", "' + tel2 + '", ' + empresaId + ' )', [], function (tx, rs) {
-
-                  }, function (tx, error) {
-                     console.log('SELECT error: ' + error.message);
-                  });
-               });
-               if (!editar) {
-                  db.transaction(function (tx) {
-                     tx.executeSql('INSERT INTO Agenda (data_agenda, opcao, observacao, emp_codigo, cli_codigo) values ("' + data_agenda + '", ' + opcao + ', "' + observacao + '", ' + empresaId + ', ' + clienteId + '); ', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               } else {
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Agenda SET data_agenda="' + data_agenda + '", opcao=' + opcao + ', observacao="' + observacao + '", emp_codigo=' + empresaId + ', cli_codigo=' + clienteId + ' WHERE codigo=' + editar + ' ;', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               }
-            } else {
-               db.transaction(function (tx) {
-                  tx.executeSql('INSERT INTO Empresas (nome) values ("' + nomeEmpresa + '")', [], function (tx, res) {
-                     empresaId = res.insertId;
-                  }, function (tx, error) {
-                     console.log('SELECT error: ' + error.message);
-                  });
-               });
-               db.transaction(function (tx) {
-                  tx.executeSql('INSERT INTO Clientes (nome, telefone1, telefone2, emp_codigo) values ("' + nomeCliente + '", "' + tel1 + '", "' + tel2 + '", ' + empresaId + ' )', [], function (tx, res) {
-                     clienteId = res.insertId;
-                  }, function (tx, error) {
-                     console.log('SELECT error: ' + error.message);
-                  });
-               });
-               if (!editar) {
-                  db.transaction(function (tx) {
-                     tx.executeSql('INSERT INTO Agenda (data_agenda, opcao, observacao, emp_codigo, cli_codigo) values ("' + data_agenda + '", ' + opcao + ', "' + observacao + '", ' + empresaId + ', ' + clienteId + '); ', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               } else {
-                  db.transaction(function (tx) {
-                     tx.executeSql('UPDATE Agenda SET data_agenda="' + data_agenda + '", opcao=' + opcao + ', observacao="' + observacao + '", emp_codigo=' + empresaId + ', cli_codigo=' + clienteId + ' WHERE codigo=' + editar + ' ;', [], function (tx, rs) {
-
-
-                     }, function (tx, error) {
-                        console.log('SELECT error: ' + error.message);
-                     });
-                  });
-               }
-            }
-         }
-
-
-
-         $('#modal1').modal('close');
-
-         preencheAgenda();
-         preencheTodos(6);
-         preencheClientes();
-         preencheEmpresas();
-
-
-      }
-
-      function resetSelect(id) {
-         $(id).formSelect('destroy');
-         $(id).val('0').change();
-         $(id).formSelect();
-      }
-
-      function editar(idAgenda) {
-
-         $("#editar").val(idAgenda);
-
-
-
-         db.transaction(function (tx) {
-
-
-            tx.executeSql('SELECT Agenda.codigo, Agenda.data_agenda, Agenda.opcao, Agenda.observacao, Clientes.codigo AS cli_codigo, Clientes.nome AS cliente, Clientes.telefone1, Clientes.telefone2, Empresas.codigo AS emp_codigo, Empresas.nome AS empresa  FROM Agenda INNER JOIN Clientes ON  Agenda.cli_codigo = Clientes.codigo INNER JOIN Empresas ON Agenda.emp_codigo = Empresas.codigo WHERE Agenda.codigo=' + idAgenda, [], function (tx, rs) {
-
-
-               $('#combobox').combobox('autocomplete', rs.rows.item(0).cliente);
-               $('#combobox').val(rs.rows.item(0).cli_codigo);
-               $("#cli_codigo").val(rs.rows.item(0).cli_codigo);
-               $("#empresa").show();
-               $('#combobox2').combobox('autocomplete', rs.rows.item(0).empresa);
-               $('#combobox2').val(rs.rows.item(0).emp_codigo);
-               $('#emp_codigo').val(rs.rows.item(0).emp_codigo);
-               $("#tel1").val(rs.rows.item(0).telefone1);
-               $("#tel2").val(rs.rows.item(0).telefone2);
-               $("#textarea1").val(rs.rows.item(0).observacao);
-               $('.data_altera').val(rs.rows.item(0).data_agenda.split("/").reverse().join("/"));
-
-               $('#opcao').formSelect('destroy');
-               $('#opcao').val(rs.rows.item(0).opcao).change();
-               $('#opcao').formSelect();
-
-               console.log("editar " + rs.rows.item(0).codigo);
-               console.log("editar " + rs.rows.item(0).cli_codigo);
-               console.log("editar " + rs.rows.item(0).emp_codigo);
-               console.log("editar " + rs.rows.item(0).data_agenda);
-
-
-            }, function (tx, error) {
-               console.log('SELECT error: ' + error.message);
-            });
-         });
-
-         $('#modal1').modal('open');
-
-
-
-
-      }
-
-      function limpaCampos() {
-         $("#cliente input").val('');
-         $("#empresa input").val('');
-         resetSelect("#opcao");
-         $('.datepicker').datepicker({}).datepicker("setDate", new Date());
-         $("#tel1").val('');
-         $("#tel2").val('');
-         $("#textarea1").val('');
-         $("#descricao").val('');
-         $("#valor").val('');
-      }
-
-
-      function limpaPesquisa() {
-         $("#searchGastos").val('');
-         $("#searchTodos").val('');
-         $("#search").val('');
-
-         preencheAgenda();
-         preencheGastos();
-         preencheTodos();
-
-      }
-
-      function fecharCadastro() {
-         $('#modal1').modal('close');
-         limpaCampos();
-      }
-
-
-      function fecharGastos() {
-         $('#modal_gastos').modal('close');
-         limpaCampos();
-      }
-
-      function abrirCadastro() {
-         $("#editar").val('');
-         $('#modal1').modal('open');
-         limpaCampos();
-      }
-
-      function abrirGastos() {
-         $('#modal_gastos').modal('open');
-         limpaCampos();
-      }
-
-      function pagar(idAgenda) {
-         if (confirm("Pago?")) {
-            db.transaction(function (tx) {
-               tx.executeSql('UPDATE Agenda SET opcao=4 WHERE codigo=' + idAgenda + ' ;', [], function (tx, rs) {
+               tx.executeSql('DELETE FROM Gastos WHERE codigo=' + idGastos + ' ;', [], function (tx, rs) {
 
                }, function (tx, error) {
                   console.log('SELECT error: ' + error.message);
                });
             });
-            preencheAgenda();
-            preencheTodos(6);
+            preencheGastos();
          }
       }
-
 
       function deletar(idAgenda) {
          if (confirm("Deseja excluir?")) {
@@ -1147,210 +1187,32 @@
          }
       }
 
-      function deletarGastos(idGastos) {
-         if (confirm("Deseja excluir?")) {
-            db.transaction(function (tx) {
-               tx.executeSql('DELETE FROM Gastos WHERE codigo=' + idGastos + ' ;', [], function (tx, rs) {
 
-               }, function (tx, error) {
-                  console.log('SELECT error: ' + error.message);
-               });
-            });
-            preencheGastos();
+
+
+      var time = setInterval(function () {
+         if ($("#todos").find(".preloader-wrapper").length > 0) {
+            preencheTodos(6);
+
+            myStopFunction();
          }
+
+
+      }, 3000);
+
+      function myStopFunction() {
+         clearInterval(time);
       }
 
-      function total() {
-         var sum = 0;
-         $('.dinheiro:visible').each(function () {
-            sum += parseFloat($(this).text().replace(',', '.'));
-         });
-
-         sum = sum.toFixed(2).toString().replace('.', ',');
-
-
-         $("#total").html(sum);
-
-
-      }
 
 
    </script>
 
 
-   <script>
-      $(function () {
-         $.widget("custom.combobox", {
-            _create: function () {
-               this.wrapper = $("<span>")
-                  .addClass("custom-combobox")
-                  .insertAfter(this.element);
-
-               this.element.hide();
-               this._createAutocomplete();
-            },
 
 
-            _createAutocomplete: function () {
-               var selected = this.element.children(":selected"),
-                  value = selected.val() ? selected.text() : "";
-
-               this.input = $("<input>")
-                  .appendTo(this.wrapper)
-                  .val(value)
-                  .attr("title", "")
-                  .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
-                  .autocomplete({
-                     delay: 0,
-                     minLength: 0,
-                     source: $.proxy(this, "_source")
-                  })
-                  .tooltip({
-                     classes: {
-                        "ui-tooltip": "ui-state-highlight"
-                     }
-                  });
-
-               this._on(this.input, {
-                  autocompleteselect: function (event, ui) {
-                     ui.item.option.selected = true;
-                     this._trigger("select", event, {
-                        item: ui.item.option
-                     });
-                  },
-
-                  autocompletechange: "_removeIfInvalid"
-               });
-            },
-
-            _createShowAllButton: function () {
-               var input = this.input,
-                  wasOpen = false;
-
-               $("<a>")
-                  .attr("tabIndex", -1)
-                  .attr("title", "Show All Items")
-                  .tooltip()
-                  .appendTo(this.wrapper)
-                  .button({
-                     icons: {
-                        primary: "ui-icon-triangle-1-s"
-                     },
-                     text: false
-                  })
-                  .removeClass("ui-corner-all")
-                  .addClass("custom-combobox-toggle ui-corner-right")
-                  .on("mousedown", function () {
-                     wasOpen = input.autocomplete("widget").is(":visible");
-                  })
-                  .on("click", function () {
-                     input.trigger("focus");
-
-                     // Close if already visible
-                     if (wasOpen) {
-                        return;
-                     }
-
-                     // Pass empty string as value to search for, displaying all results
-                     input.autocomplete("search", "");
-                  });
-            },
-
-            _source: function (request, response) {
-               var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
-               response(this.element.children("option").map(function () {
-                  var text = $(this).text();
-                  if (this.value && (!request.term || matcher.test(text)))
-                     return {
-                        label: text,
-                        value: text,
-                        option: this
-                     };
-               }));
-            },
-
-            _removeIfInvalid: function (event, ui) {
-               $("#empresa").css("display", "block");
-
-               var clienteId = $("#combobox option:selected").val();
-               var empresa = $("#combobox2 option:selected").text();
-
-               if (clienteId > 0 && !empresa) {
-                  db.transaction(function (transaction) {
-                     transaction.executeSql('SELECT Empresas.codigo, Empresas.nome, Clientes.telefone1, Clientes.telefone2 FROM Empresas INNER JOIN Clientes ON Empresas.codigo = Clientes.emp_codigo WHERE Clientes.codigo=' + clienteId + ';', [],
-                        function (transaction, results) {
-                           if (results != null && results.rows != null) {
-                              if (results.rows.length > 0) {
-                                 for (var i = 0; i < results.rows.length; i++) {
-                                    $('#combobox2').combobox('autocomplete', results.rows.item(i).nome);
-                                    $('#combobox2').val(results.rows.item(i).codigo);
-                                    $('#tel1').val(results.rows.item(i).telefone1);
-                                    $('#tel2').val(results.rows.item(i).telefone2);
-                                 }
-
-                              }
-                           }
-                        });
-                  });
-               } else {
-                  $("#empresa input").val();
-                  $('#tel1').val('');
-                  $('#tel2').val('');
-               }
-
-               // Selected an item, nothing to do
-               if (ui.item) {
-                  return;
-               }
-
-               // Search for a match (case-insensitive)
-               var value = this.input.val(),
-                  valueLowerCase = value.toLowerCase(),
-                  valid = false;
-               this.element.children("option").each(function () {
-                  if ($(this).text().toLowerCase() === valueLowerCase) {
-                     this.selected = valid = true;
-                     return false;
-                  }
-               });
-
-               // Found a match, nothing to do
-               if (valid) {
-                  return;
-               }
-
-               // Remove invalid value
-               /*this.input
-                  .val("")
-                  .attr("title", value + " didn't match any item")
-                  .tooltip("open");*/
-
-               this.element.val("");
-               this._delay(function () {
-                  this.input.tooltip("close").attr("title", "");
-               }, 2500);
-               //this.input.autocomplete("instance").term = "";
-            },
-
-            _destroy: function () {
-               this.wrapper.remove();
-               this.element.show();
-            },
-            autocomplete: function (value) {
-               this.element.val(value);
-               this.input.val(value);
-            }
 
 
-         });
-
-         $("#combobox").combobox();
-         $("#combobox2").combobox();
-
-      });
-
-
-   </script>
 
 </body>
 

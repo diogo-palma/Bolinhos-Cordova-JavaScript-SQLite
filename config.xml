@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Bolinhos</name>
+    <name>BolinhosApp</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+       Venda de bolinhos
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
+    <author email="diogopalma@live.com" href="http://www.github.com/diogo-palma">
         Apache Cordova Team
     </author>
     <content src="index.html" />
@@ -45,6 +45,7 @@
         <icon height="58" platform="ios" src="res/icons/ios/icon-small@2x.png" width="58" />
         <icon height="87" platform="ios" src="res/icons/ios/icon-small@3x.png" width="87" />
     </platform>
+    <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
     <plugin name="cordova-sqlite-storage" spec="2.6.0" />
     <plugin name="cordova-plugin-dbcopy" spec="^2.1.2" />
     <engine name="android" spec="^7.1.4" />
